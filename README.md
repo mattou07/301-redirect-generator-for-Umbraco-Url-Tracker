@@ -2,6 +2,6 @@
 
 # Introduction
 
-This is a small Python script that will take a csv file filled with 301 redirects and attempt to generate an INSERT sql script for all the redirects for [Umbraco Url Tracker](https://our.umbraco.org/projects/developer-tools/301-url-tracker/) to use.
+This is a small Python script that will take a csv file filled with 301 redirects and attempt to generate an INSERT/UPDATE sql script for all the redirects for <a href="https://our.umbraco.org/projects/developer-tools/301-url-tracker/" target="_blank">Umbraco Url Tracker</a> to use.
 
-**WIP**
+**This is a WIP**

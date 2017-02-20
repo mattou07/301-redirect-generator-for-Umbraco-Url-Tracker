@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Private Files
+results/index.csv
+results/failedUrls.csv
+
