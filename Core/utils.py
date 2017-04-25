@@ -10,10 +10,13 @@ class Utils:
 
     @staticmethod
     def removeFrontSlash(urlObj):
+
         urlPath = urlObj.path
+        #print('path is '+ urlPath)
         if len(urlObj.path) > 1:
             if urlObj.path.startswith('/'):
                 urlPath = urlObj.path[1:]
+                #removeFrontSlash(urlPath)
         return urlPath
 
 

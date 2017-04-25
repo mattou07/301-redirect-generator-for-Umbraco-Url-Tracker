@@ -4,10 +4,11 @@ import urllib
 import sys
 
 class Spider:
-    def __init__(self, urls, host, positions):
+    def __init__(self, urls, host, positions, debug):
         self.urls = urls
         self.host = host
         self.positions = positions
+        self.debug = debug
 
     def report(data):
         bad = open('results/index.csv', "a", encoding='utf-8-sig')
@@ -20,27 +21,53 @@ class Spider:
         bad.seek(0)
         bad.truncate()
         bad.close()
+        failed = 0
         for index, row in enumerate(self.urls):
-            # print('Scanned '+str(index)+' urls', end='')
-            sys.stdout.write("\rScanned %i urls" % index)
-            sys.stdout.flush()
-            #try:
-            urlObj = urlparse(row[self.positions[0]])
-            #print(urlObj)
-            #print(self.host+urlObj.path)
-            #input()
-            if urlObj.netloc != '':
-                r = requests.head(self.host+urlObj.path)
+
+            if not self.debug:
+                sys.stdout.write("\rScanned %i urls. %f failed " % (index, int(failed)))
+                sys.stdout.flush()
+            oldUrlObj = urlparse(row[self.positions[0]])
+            newUrlOjb = urlparse(row[self.positions[1]])
+            if self.debug:
+                print ('==========================')
+                print(oldUrlObj)
+                print(self.host+oldUrlObj.path)
+
+            if oldUrlObj.netloc != '':
+                urlSent = [self.host, oldUrlObj.path, '?'+oldUrlObj.query]
+                urlSent = ''.join(filter(None, urlSent))
+                #print (urlSent)
+                r = requests.head(urlSent)
                 code = r.status_code
                 if (code == 404):
-                    #print("Line: " + str(index) + " " + str(row[self.positions[0]]) +" returns 404 "+str(row[self.positions[1]]))
+                    failed +=1
+                    if self.debug:
+                        print("Line: " + str(index) + " " + str(row[self.positions[0]]) +" returns 404 "+str(row[self.positions[1]]))
                     Spider.report(row[self.positions[0]]+','+row[self.positions[1]]+',404')
+                    if self.debug:
+                        input()
                 elif (code == 500):
-                    print("Line: " + str(index) + " " + str(self.positions[0]) + ",returns 500")
+                    failed += 1
+                    if self.debug:
+                        print("Line: " + str(index) + " " + str(self.positions[0]) + ",returns 500")
+                        if self.debug:
+                            input()
 
-                elif (str(r.url) != str(row[self.positions[1]])):
-                    #print("301 Redirect Mismatch found: Targeted Url: " + str(row[self.positions[0]]) + " Returned Url: " + str(r.url) + " Expected: " + str(row[self.positions[1]]))
-                    Spider.report(row[self.positions[0]]+','+row[self.positions[1]]+',mismatch')
+                elif (code == 301):
+                    if (str(r.headers['Location']) != self.host+newUrlOjb.path):
+                        failed += 1
+                        if self.debug:
+                            print("301 Redirect Mismatch found: Targeted Url: " + urlSent + " Returned Url: " + str(r.headers['Location']) + " Expected: " + self.host+newUrlOjb.path)
+                        Spider.report(row[self.positions[0]]+','+row[self.positions[1]]+',mismatch')
+                        if self.debug:
+                            input()
+                elif (code == 200):
+                    print ("Odd behavior on "+ self.host+oldUrlObj.path + " Returned Url: " + str(r.url) + " Expected: " + self.host+newUrlOjb.path)
+                    if self.debug:
+                        input()
+
+
             #except Exception as e:
                 #print("Line: " + str(index) + " is not a valid Url ("+str(self.positions[0])+")")
 

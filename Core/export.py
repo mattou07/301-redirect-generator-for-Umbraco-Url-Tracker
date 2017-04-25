@@ -1,6 +1,8 @@
 from Core.utils import *
 import csv
 from urllib.parse import urlparse
+import urllib
+
 
 class Export:
     @staticmethod
@@ -19,7 +21,7 @@ class Export:
             mismatchFlag = row[2]
             urlArrays.append([[oldUrlObjcsv.path],newUrlObjcsv,mismatchFlag])
 
-        print(urlArrays)
+        # print(urlArrays)
 
     @staticmethod
     def generateSQL(oldUrlObj, newUrlObj, mismatchFlag):
@@ -36,7 +38,7 @@ class Export:
 
         oldPath = Utils.removeFrontSlash(oldUrlObj)
         newUrl = Utils.removeFrontSlash(newUrlObj)
-
+        #print(oldPath)
         if ("'" in oldPath):
             oldPath = oldPath.replace("'", "''")
 
@@ -65,14 +67,14 @@ class Export:
 
     @staticmethod
     def exportSQL():
-        ifile = open('results/index.csv', "r")
+        ifile = open('results/index.csv', "r", encoding='utf-8-sig')
         read = csv.reader(ifile)
         count = 1
         f = open('sql/urlTracker.sql', 'w')
 
         for row in read:
-            oldUrlObjcsv = urlparse(row[0])
-            newUrlObjcsv = urlparse(row[1])
+            oldUrlObjcsv = urlparse(urllib.parse.unquote(row[0]))
+            newUrlObjcsv = urlparse(urllib.parse.unquote(row[1]))
             mismatchFlag = row[2]
             f.write(Export.generateSQL(oldUrlObjcsv, newUrlObjcsv, mismatchFlag))
 

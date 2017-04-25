@@ -92,3 +92,5 @@ ENV/
 results/index.csv
 results/failedUrls.csv
 
+.idea/
+
