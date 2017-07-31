@@ -1,0 +1,9 @@
+{
+  "hostname": "http://www.domain.co.uk",
+  "csv": "foldername/file.csv",
+  "ignorefirstLine": "true",
+  "position": {
+    "oldUrlPos": 1,
+    "newUrlPos": 2
+  }
+}
