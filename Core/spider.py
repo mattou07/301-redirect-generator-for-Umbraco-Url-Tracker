@@ -52,7 +52,7 @@ class Spider:
                     if self.debug:
                         print("Line: " + str(index) + " " + str(self.positions[0]) + ",returns 500")
                         if self.debug:
-                            input()
+                            input("The above Url failed, press enter to continue:")
 
                 elif (code == 301):
                     if (str(r.headers['Location']) != self.host+newUrlOjb.path):
@@ -61,11 +61,11 @@ class Spider:
                             print("301 Redirect Mismatch found: Targeted Url: " + urlSent + " Returned Url: " + str(r.headers['Location']) + " Expected: " + self.host+newUrlOjb.path)
                         Spider.report(row[self.positions[0]]+','+row[self.positions[1]]+',mismatch')
                         if self.debug:
-                            input()
+                            input("The above Url failed, press enter to continue:")
                 elif (code == 200):
                     print ("Odd behavior on "+ self.host+oldUrlObj.path + " Returned Url: " + str(r.url) + " Expected: " + self.host+newUrlOjb.path)
                     if self.debug:
-                        input()
+                        input("The above Url failed, press enter to continue:")
 
 
             #except Exception as e:

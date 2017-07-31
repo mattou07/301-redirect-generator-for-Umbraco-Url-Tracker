@@ -3,7 +3,7 @@ from Core.export import *
 from Core.config import *
 import csv
 import os.path
-debug = True
+debug = False
 # Debug mode variable
 
 
@@ -34,7 +34,7 @@ def menu():
     elif option == "1":
         if os.path.exists('./'+config.csv):
             ifile = open(config.csv, "r", encoding='utf-8-sig')
-            test = Spider(csv.reader(ifile), config.hostname, [1, 4], debug)
+            test = Spider(csv.reader(ifile), config.hostname, [1, 2], debug)
             # (CSV file name, hostname of site, positions of the old url and new, debug variable)
             test.crawl()
             return False
