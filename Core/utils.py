@@ -17,6 +17,9 @@ class Utils:
             if urlObj.path.startswith('/'):
                 urlPath = urlObj.path[1:]
                 #removeFrontSlash(urlPath)
+
+        if urlPath == "":
+            urlPath = "/"
         return urlPath
 
 
