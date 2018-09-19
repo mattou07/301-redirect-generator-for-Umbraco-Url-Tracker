@@ -34,7 +34,7 @@ def menu():
     elif option == "1":
         if os.path.exists('./'+config.csv):
             ifile = open(config.csv, "r", encoding='utf-8-sig')
-            test = Spider(csv.reader(ifile), config.hostname, [1, 2], debug)
+            test = Spider(csv.reader(ifile), config.hostname, [config.oldUrlPos, config.newUrlPos], debug)
             # (CSV file name, hostname of site, positions of the old url and new, debug variable)
             test.crawl()
             return False

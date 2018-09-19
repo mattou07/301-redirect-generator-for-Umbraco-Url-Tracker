@@ -96,3 +96,4 @@ sql/*
 sql/urlTracker
 .idea/
 
+.vscode/*
