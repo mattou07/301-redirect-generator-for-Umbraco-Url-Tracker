@@ -91,8 +91,8 @@ ENV/
 # Private Files
 results/index.csv
 results/failedUrls.csv
-csvs/
-sql/
+csv/*
+sql/*
 sql/urlTracker
 .idea/
 
